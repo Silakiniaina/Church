@@ -1,10 +1,15 @@
-[] Base : 
-	- [] Choix des entites
+[x] Etude du projet 
+[x] Initialisation : 
+	- [x] Installation des technologies requises
+	- [x] Preparation de l'environnement de travail
+	- [x] Familiarisation avec les nouvelles technologies
+[x] Base : 
+	- [x] Choix des entites
 		- Croyant  
 		- Eglise
 		- Offrande
 		- Pret 
-	- [] Conception base
+	- [x] Conception base
 
 [] Etape 1 : Connexion python et base
 

@@ -1,0 +1,13 @@
+CREATE TABLE Croyant(
+   id INT IDENTITY,
+   nom VARCHAR(100)  NOT NULL,
+   prenom VARCHAR(100)  NOT NULL,
+   date_naissance DATE NOT NULL,
+   email VARCHAR(50)  NOT NULL,
+   mot_de_passe VARCHAR(254)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+INSERT INTO Croyant(nom,prenom,date_naissance,email,mot_de_passe) VALUES 
+    ('Ravelonarivo','Sanda','2005-07-12','sanda@gmail.com','admin')
+;
