@@ -14,4 +14,8 @@ class Eglise:
         if(Formater.chech_is_empty_string(n)):
             raise EmptyNameException("The church name can't be empty or null")
         else:
-            self.name = n      
+            self.name = n    
+            
+    def __init__(self,id,name):
+        self.set_id(id)
+        self.set_name(name)  
