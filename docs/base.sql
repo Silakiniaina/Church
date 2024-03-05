@@ -11,3 +11,16 @@ CREATE TABLE Croyant(
 INSERT INTO Croyant(nom,prenom,date_naissance,email,mot_de_passe) VALUES 
     ('Ravelonarivo','Sanda','2005-07-12','sanda@gmail.com','admin')
 ;
+
+CREATE TABLE Eglise(
+   id INT IDENTITY,
+   nom VARCHAR(100)  NOT NULL,
+   PRIMARY KEY(id),
+   UNIQUE(nom)
+);
+
+INSERT INTO Eglise(nom) VALUES 
+    ('FJKM Antanambao'),
+    ('FJKM Ikianja'),
+    ('FJKM Ankadidambo')
+;
