@@ -17,3 +17,11 @@ class Offrande:
             raise NullOrNegativeNumberException("Le montant ne peut pas etre negatif")
         else:
             self.montant = entered_montant
+            
+    def set_numero_dimanche(self, n: int):
+        if(n < 0):
+            raise NullOrNegativeNumberException("The sunday_number can't be negative")
+        elif(n > 52):
+            raise NullOrNegativeNumberException("The sunday number can't be upper than 52")
+        else: 
+            self.numero_dimanche = n
