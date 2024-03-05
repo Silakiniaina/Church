@@ -11,7 +11,7 @@ class Croyant:
 
     def set_id(self,entered_id: int):
         if(entered_id <= 0):
-            raise NullOrNegativeNumberException("The id can't be null or less than 0")
+            raise NumberException("The id can't be null or less than 0")
         else: 
             self.id = entered_id
             
@@ -23,7 +23,7 @@ class Croyant:
             
     def set_date_of_birth(self,dt: datetime):
         if(dt < datetime.now()):
-            raise DateBirthException("The date of birth couldn't be a future date")
+            raise DateException("The date of birth couldn't be a future date")
         else:
             self.date_of_birth = dt
             

@@ -1,11 +1,11 @@
 class EmailException(Exception):
     pass
 
-class DateBirthException(Exception):
+class DateException(Exception):
     pass
 
 class EmptyNameException(Exception):
     pass
 
-class NullOrNegativeNumberException(Exception):
+class NumberException(Exception):
     pass
