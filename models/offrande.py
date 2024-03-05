@@ -11,3 +11,9 @@ class Offrande:
             raise NullOrNegativeNumberException("The id can't be null or less than 0")
         else: 
             self.id = entered_id
+            
+    def set_montant(self,entered_montant: float):
+        if(entered_montant < 0):
+            raise NullOrNegativeNumberException("Le montant ne peut pas etre negatif")
+        else:
+            self.montant = entered_montant
