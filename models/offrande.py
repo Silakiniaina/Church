@@ -37,3 +37,12 @@ class Offrande:
             raise NumberException("The id of the church can't be null or less than 0")
         else: 
             self.id_eglise = entered_id
+            
+    def __init__(self,id,montant,nb_dim,annee,egl):
+        self.set_id(id)
+        self.set_montant(montant)
+        self.set_numero_dimanche(nb_dim)
+        self.set_annee(annee)
+        self.set_id_eglise(egl)
+        
+    
