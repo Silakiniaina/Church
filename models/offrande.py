@@ -101,3 +101,24 @@ class Offrande:
             if(con != None): con.close()
         return result
     
+    @staticmethod
+    def get_portion(num_dim: int, year: int):
+        result = 0.0
+        con = None
+        cur = None 
+        row = None
+        try: 
+            con = Database.get_connection()
+            query = f"SELECT t1.total/t2.total as total FROM (SELECT sum(montant) as total FROM offrande WHERE numero_dimanche <= {num_dim} AND annee = {year-1})AS t1,(SELECT sum(montant) as total FROM offrande WHERE numero_dimanche <= {num_dim} AND annee = {year})AS t2";
+            cur = con.execute(query)
+            row = cur.fetchone()
+            if(row != None):
+                result = float(row.__getitem__(0))
+        except Exception as e:
+            raise e 
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+            
+            
