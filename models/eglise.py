@@ -34,8 +34,7 @@ class Eglise:
             cur.execute(query)
             rows = cur.fetchall()
             for row in rows:
-                temp = Eglise(row.__getitem__(0),
-                              row.__getitem__(1));
+                temp = Eglise(row.__getitem__(0),row.__getitem__(1));
                 result.append(temp)
         except Exception as e:
             raise e

@@ -48,11 +48,7 @@ class Croyant:
             cur.execute(query)
             row = cur.fetchone()
             if(row != None):
-                result = Croyant(row.__getitem__(0),
-                                 row.__getitem__(1),
-                                 row.__getitem__(2),
-                                 row.__getitem__(3),
-                                 row.__getitem__(4));
+                result = Croyant(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4));
         except Exception as e:
             print("There was an error while connecting")
         finally:
