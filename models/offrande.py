@@ -74,3 +74,30 @@ class Offrande:
             if(con != None): con.close()
         return
     
+    @staticmethod
+    def get_all_offrande():
+        result = []
+        con = None
+        cur = None  
+        rows = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM offrande ORDER BY numero_dimanche ASC"
+            cur = con.cursor()
+            cur.execute(query)
+            rows = cur.fetchall()
+            for row in rows:
+                temp = Offrande(row.__getitem__(0),
+                                row.__getitem__(1),
+                                row.__getitem__(2),
+                                row.__getitem__(3),
+                                row.__getitem__(4),
+                                row.__getitem__(5));
+                result.append(temp)
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+    
