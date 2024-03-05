@@ -24,3 +24,23 @@ INSERT INTO Eglise(nom) VALUES
     ('FJKM Ikianja'),
     ('FJKM Ankadidambo')
 ;
+
+CREATE TABLE Offrande(
+   id INT IDENTITY,
+   montant DECIMAL(18,2)   NOT NULL,
+   numero_dimance SMALLINT NOT NULL,
+   annee BIGINT NOT NULL,
+   nombre INT NOT NULL,
+   id_eglise INT,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_eglise) REFERENCES Eglise(id)
+);
+
+INSERT INTO Offrande(montant,numero_dimance,annee,nombre,id_eglise) VALUES
+    (12000,1,2022,123,1),
+    (13450,1,2022,123,2),
+    (13450,1,2022,123,3),
+    (45677,2,2022,523,1),
+    (23456,2,2022,234,2),
+    (52000,2,2022,445,3)
+;
