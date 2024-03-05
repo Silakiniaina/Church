@@ -13,7 +13,7 @@ class Croyant:
             raise NullOrNegativeNumberException("The id can't be null or less than 0")
         else: 
             self.id = entered_id
-
+            
     def set_email(self,mail: str):
         if(not mail.__contains__("@") or not mail.__contains__(".com")):
             raise EmailException("The email must countains the character : '@' and '.com' ")
@@ -25,3 +25,10 @@ class Croyant:
             raise DateBirthException("The date of birth couldn't be a future date")
         else:
             self.date_of_birth = dt
+            
+    def __init__(self,id: int, n: str, fn: str, dtn: datetime, mail: str):
+        self.set_id(id)
+        self.name = n
+        self.first_name = fn 
+        self.date_of_birth = dtn 
+        self.email = mail
