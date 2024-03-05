@@ -31,3 +31,9 @@ class Offrande:
             raise DateException("The year of offrande can't be lower than 2024")
         else:
             self.annee = n
+    
+    def set_id_eglise(self,entered_id: int):
+        if(entered_id <= 0):
+            raise NumberException("The id of the church can't be null or less than 0")
+        else: 
+            self.id_eglise = entered_id
