@@ -1,0 +1,33 @@
+[] Base : 
+	- [] Choix des entites
+		- Croyant  
+		- Eglise
+		- Offrande
+		- Pret 
+	- [] Conception base
+
+[] Etape 1 : Connexion python et base
+
+[] Etape 2 : Login utilisateur 
+	- [] Creation formulaire de login
+	- [] Creation fonction login() 
+	- [] Creation table utilisateur(Mpino)
+  
+[] Etape 3 : Insertion rakitra 
+	- [] Creation formulaire d'insertion rakitra 
+	- [] Creation fonction insert() dans la classe Rakitra
+	- [] Creation table rakitra
+
+[] Etape 4 : Pret 
+	- [] Creation table Church avec une colonne "solde" 
+	- [] Creation formulaire de pret d'argent du Mpino
+	- [] Creation fonction insert() dans la classe Pret() 
+	- [] Creation table pret 
+	- [] Creation fonction getPortion() dans la classe Rakitra ( Le pourcentage de changement de rakitra par rapport a l'annee derniere)
+	- [] Creation fonction predireNextRakitra dans la classe rakitra qui va estimer le rakitra de la prochaine dimanche en applicant la portion obtenue
+	** Tout insertion de rakitra va updater la solde du fiangonana
+ 
+[] Etape 5 : Affichage du resultat 
+	- [] Creation isValidOn() dans la classe Pret qui va retourner la date possible de l'emprunt 
+	- [] Creation affichage du date resultat  
+
