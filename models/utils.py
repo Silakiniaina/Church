@@ -1,4 +1,7 @@
+import calendar
 from datetime import datetime
+from datetime import date,timedelta
+
 class Formater:
     
     @staticmethod
@@ -11,3 +14,19 @@ class Formater:
         if(s.replace(" ","") == ""):
             result = True
         return result
+
+class DateManagement:
+    @staticmethod
+    def date_dimanche_numero(n, annee):
+        if n < 1 or n > 52:
+            raise ValueError("Le chiffre n doit être compris entre 1 et 52 inclus.")
+        date_en_cours = datetime(annee, 1, 1)
+        dimanches_trouves = 0
+        while dimanches_trouves != n:
+            if date_en_cours.weekday() == 6:
+                dimanches_trouves += 1
+            if(dimanches_trouves != n):
+                date_en_cours += timedelta(days=1) 
+
+        return date_en_cours
+    
