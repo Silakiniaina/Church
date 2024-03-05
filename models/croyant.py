@@ -19,3 +19,9 @@ class Croyant:
             raise EmailException("The email must countains the character : '@' and '.com' ")
         else:
             self.email = mail
+            
+    def set_date_of_birth(self,dt: datetime):
+        if(dt < datetime.now()):
+            raise DateBirthException("The date of birth couldn't be a future date")
+        else:
+            self.date_of_birth = dt
