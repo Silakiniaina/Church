@@ -54,7 +54,6 @@ class Croyant:
                                  row.__getitem__(3),
                                  row.__getitem__(4));
         except Exception as e:
-            print(e)
             print("There was an error while connecting")
         finally:
             if(cur != None): cur.close()

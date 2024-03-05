@@ -28,7 +28,7 @@ INSERT INTO Eglise(nom) VALUES
 CREATE TABLE Offrande(
    id INT IDENTITY,
    montant DECIMAL(18,2)   NOT NULL,
-   numero_dimance SMALLINT NOT NULL,
+   numero_dimanche SMALLINT NOT NULL,
    annee BIGINT NOT NULL,
    nombre INT NOT NULL,
    id_eglise INT,
@@ -36,7 +36,7 @@ CREATE TABLE Offrande(
    FOREIGN KEY(id_eglise) REFERENCES Eglise(id)
 );
 
-INSERT INTO Offrande(montant,numero_dimance,annee,nombre,id_eglise) VALUES
+INSERT INTO Offrande(montant,numero_dimanche,annee,nombre,id_eglise) VALUES
     (12000,1,2022,123,1),
     (13450,1,2022,123,2),
     (13450,1,2022,123,3),
