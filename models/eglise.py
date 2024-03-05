@@ -42,3 +42,27 @@ class Eglise:
             if(cur != None): cur.close()
             if(con != None): con.close()
         return result
+    
+    @staticmethod
+    def get_eglise_by_id(id: int):
+        result = None
+        con = None
+        cur = None  
+        row = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM eglise WHERE id= ?"
+            values = (id)
+            cur = con.cursor()
+            cur.execute(query,values)
+            row = cur.fetchone()
+            if(row != None):
+                result = Eglise(row.__getitem__(0),row.__getitem__(1));
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+    
+    

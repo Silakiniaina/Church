@@ -1,4 +1,5 @@
 from exception import *
+from eglise import Eglise
 from data import Database
 
 class Offrande: 
@@ -12,7 +13,7 @@ class Offrande:
     def set_id(self,entered_id: int):
         if(entered_id <= 0):
             raise NumberException("The id can't be null or less than 0")
-        else: 
+        else:
             self.id = entered_id
             
     def set_montant(self,entered_montant: float):
@@ -29,15 +30,18 @@ class Offrande:
             
     def set_numero_dimanche(self, n: int):
         if(n < 0):
-            raise NumberException("The sunday_number can't be negative")
-        elif(n > 52):
-            raise NumberException("The sunday number can't be upper than 52")
-        else: 
+            raise NumberException("The sunday number can't be null or less than 0")
+        elif(n == 0):
+            self.numero_dimanche = 52
+            self.annee = self.annee - 1
+        elif(n == 53): 
+            self.numero_dimanche = 1
+            self.annee = self.annee + 1
+        else:
             self.numero_dimanche = n
-    
     def set_annee(self, n: int):
-        if(n < 2024):
-            raise DateException("The year of offrande can't be lower than 2024")
+        if(n < 1900):
+            raise DateException("The year of offrande can't be lower than 1900")
         else:
             self.annee = n
     
@@ -47,13 +51,16 @@ class Offrande:
         else: 
             self.id_eglise = entered_id
             
+    def get_eglise(self):
+        return Eglise.get_eglise_by_id(self.id_eglise)
+            
     def __init__(self,id,montant,nb_dim,annee,egl,n):
         self.set_id(id)
         self.set_montant(montant)
-        self.set_numero_dimanche(nb_dim)
         self.set_annee(annee)
         self.set_id_eglise(egl)
         self.set_nombre(n)
+        self.set_numero_dimanche(nb_dim)
         
     def insert(self):
         con = None
@@ -148,7 +155,7 @@ class Offrande:
         row = None
         try: 
             con = Database.get_connection()
-            query = f"SELECT t1.total/t2.total as total FROM (SELECT sum(montant) as total FROM offrande WHERE numero_dimanche <= {num_dim} AND annee = {year-1})AS t1,(SELECT sum(montant) as total FROM offrande WHERE numero_dimanche <= {num_dim} AND annee = {year})AS t2";
+            query = f"SELECT ((t2.total-t1.total)/t1.total) as total FROM (SELECT sum(montant) as total FROM offrande WHERE numero_dimanche <= {num_dim} AND annee = {year-1})AS t1,(SELECT sum(montant) as total FROM offrande WHERE numero_dimanche <= {num_dim} AND annee = {year})AS t2";
             cur = con.execute(query)
             row = cur.fetchone()
             if(row != None):
@@ -159,5 +166,17 @@ class Offrande:
             if(cur != None): cur.close()
             if(con != None): con.close()
         return result
-            
+    
+    def predict(self,portion):
+        result = None
+        offrande_antetieur = Offrande.get_offrande_by_numero_dimanche(self.numero_dimanche + 1,self.annee - 1)
+        surplus = float(offrande_antetieur.montant) * portion
+        next_valeur_offrande = float(offrande_antetieur.montant) + surplus
+        result = Offrande(2,next_valeur_offrande,self.numero_dimanche +1,self.annee,self.id_eglise,self.nombre)
+        return result;
+
+        
+        
+    
+    
             
