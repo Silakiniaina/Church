@@ -42,7 +42,7 @@ class Croyant:
         row = None
         try:
             con = Database.get_connection()
-            query = f"SELECT * FROM croyant WHERE email='{mail}' AND password='{pwd}'"
+            query = f"SELECT * FROM croyant WHERE email='{mail}' AND mot_de_passe='{pwd}'"
             print(query)
             cur = con.cursor()
             cur.execute(query)
