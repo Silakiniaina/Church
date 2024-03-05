@@ -119,6 +119,28 @@ class Offrande:
         return result
     
     @staticmethod
+    def get_offrande_by_numero_dimanche(id: int,year: int):
+        result = None
+        con = None
+        cur = None  
+        row = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM offrande WHERE numero_dimanche= ? AND annee= ?"
+            values = (id,year)
+            cur = con.cursor()
+            cur.execute(query,values)
+            row = cur.fetchone()
+            if(row != None):
+                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),row.__getitem__(5));
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+    
+    @staticmethod
     def get_portion(num_dim: int, year: int):
         result = 0.0
         con = None
