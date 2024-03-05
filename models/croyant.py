@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from exception import *
 
 class Croyant:
     id: int 
@@ -12,3 +13,9 @@ class Croyant:
             raise NullOrNegativeNumberException("The id can't be null or less than 0")
         else: 
             self.id = entered_id
+
+    def set_email(self,mail: str):
+        if(not mail.__contains__("@") or not mail.__contains__(".com")):
+            raise EmailException("The email must countains the character : '@' and '.com' ")
+        else:
+            self.email = mail
