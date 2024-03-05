@@ -21,3 +21,26 @@ class Eglise:
     def __init__(self,id,name):
         self.set_id(id)
         self.set_name(name)  
+        
+    @staticmethod
+    def get_all_eglise():
+        result = []
+        con = None
+        cur = None  
+        rows = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM eglise"
+            cur = con.cursor()
+            cur.execute(query)
+            rows = cur.fetchall()
+            for row in rows:
+                temp = Eglise(row.__getitem__(0),
+                              row.__getitem__(1));
+                result.append(temp)
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
