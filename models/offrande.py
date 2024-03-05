@@ -105,11 +105,11 @@ class Offrande:
         try:
             con = Database.get_connection()
             query = "SELECT * FROM offrande WHERE id= ?"
-            values = (self.id)
+            values = (id)
             cur = con.cursor()
             cur.execute(query,values)
             row = cur.fetchone()
-            if(row != None)
+            if(row != None):
                 result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),row.__getitem__(5));
         except Exception as e:
             raise e
