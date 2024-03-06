@@ -93,20 +93,20 @@ class Pret:
     def get_estimation(self):
         eglise = Eglise.get_eglise_by_id(self.eglise.id)
         result = None
-        last_offrande = Offrande.get_last_offrande(self.numero_dimanche,self.annee)
-        portion = Offrande.get_portion(self.numero_dimanche,self.annee)
+        last_offrande = Offrande.get_last_offrande(self.numero_dimanche ,self.annee)
+        portion = Offrande.get_portion(self.numero_dimanche, self.annee)
         if(eglise.initial_solde >= self.montant):
-            result =  DateManagement.date_dimanche_numero(self.numero_dimanche,self.annee)
+            result =  DateManagement.date_dimanche_numero(self.numero_dimanche, self.annee)
         else:
             difference = 0.0
             while(eglise.initial_solde < self.montant):
                 next_offrande = last_offrande.predict(portion)
                 eglise.initial_solde += decimal.Decimal(next_offrande.montant)
                 difference = eglise.initial_solde - decimal.Decimal(self.montant)
-                print("Demande : ",self.montant, "Current solde : ",eglise.initial_solde," difference : ",difference) 
+                print("Demande : ",self.montant, "Current solde : ", eglise.initial_solde, " difference : " ,difference) 
                 last_offrande = next_offrande
-            result = DateManagement.date_dimanche_numero(last_offrande.numero_dimanche,last_offrande.annee)
-            self.update_historique_solde(result,difference)
+            result = DateManagement.date_dimanche_numero(last_offrande.numero_dimanche, last_offrande.annee)
+            self.update_historique_solde(result, difference)
         return result
     
     def update_historique_solde(self,dt,val):

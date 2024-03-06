@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    <link rel="stylesheet" href="static/login.css">
 </head>
 <body>
     <div class="container">
@@ -13,11 +14,17 @@
             </div>
             <div class="form_container--content">
                 <form action="/login" method="POST">
-                    <label for="input_mail">Email</label>
-                    <input id="input_mail"type="email"name="mail"placeholder="Enter your email adress"value="sanda@gmail.com">
-                    <label for="input_pwd">Password</label>
-                    <input id="input_mail"type="password"name="pwd"placeholder="**********"value="admin">
-                    <button type="submit">Login</button>
+                    <div class="email">
+                        <label for="input_mail">Email</label>
+                        <input id="input_mail"type="email"name="mail"placeholder="Enter your email adress"value="sanda@gmail.com">
+                    </div>
+                    <div class="password">
+                        <label for="input_pwd">Password</label>
+                        <input id="input_mail"type="password"name="pwd"placeholder="**********"value="admin">
+                    </div>
+                    <div class="bt">
+                        <button type="submit">Login</button>
+                    </div>
                 </form>
             </div>
         </div>

@@ -76,11 +76,6 @@ class Offrande:
             cur = con.cursor()
             values1 = (self.montant,self.numero_dimanche,self.annee,self.eglise.id,self.nombre)
             cur.execute(query,values1)
-            # query = f"INSERT INTO historique_solde(solde,date_historique,id_eglise) VALUES (?,?,?)"
-            # solde = self.eglise.initial_solde + self.montant
-            # date = DateManagement.date_dimanche_numero(self.numero_dimanche,self.annee)
-            # values = (solde,date, self.eglise.id)
-            # cur.execute(query,values)
             con.commit()
             print("Insertion fait")
         except Exception as e:
@@ -99,7 +94,7 @@ class Offrande:
             if(num != 0): 
                 res = Offrande.get_offrande_by_numero_dimanche(num,annee)
             else: 
-                raise Exception("There was no offrade this year")
+                raise Exception("There was no offrande this year")
         return res 
    
     @staticmethod
@@ -117,28 +112,6 @@ class Offrande:
             for row in rows:
                 temp = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),row.__getitem__(5));
                 result.append(temp)
-        except Exception as e:
-            raise e
-        finally:
-            if(cur != None): cur.close()
-            if(con != None): con.close()
-        return result
-
-    @staticmethod
-    def get_offrande_by_id(id: int):
-        result = None
-        con = None
-        cur = None  
-        row = None
-        try:
-            con = Database.get_connection()
-            query = "SELECT * FROM offrande WHERE id= ?"
-            values = (id)
-            cur = con.cursor()
-            cur.execute(query,values)
-            row = cur.fetchone()
-            if(row != None):
-                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),Eglise.get_eglise_by_id(row.__getitem__(5)));
         except Exception as e:
             raise e
         finally:
@@ -201,32 +174,6 @@ class Offrande:
                 n = 1
                 year = year + 1
             values = (n,year - 1)
-            cur = con.cursor()
-            cur.execute(query,values)
-            row = cur.fetchone()
-            if(row != None):
-                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),Eglise.get_eglise_by_id(row.__getitem__(5)));
-        except Exception as e:
-            raise e
-        finally:
-            if(cur != None): cur.close()
-            if(con != None): con.close()
-        return result
-    
-    def get_offrande_anterieur(self):
-        # print("Get offrande anterieur de  : ",self.numero_dimanche," year : ",self.annee)
-        result = None
-        con = None
-        cur = None  
-        row = None
-        try:
-            con = Database.get_connection()
-            query = "SELECT * FROM offrande WHERE numero_dimanche= ? AND annee= ?"
-            if(self.numero_dimanche < 52):
-                values = (self.numero_dimanche + 1,self.annee - 1)
-            elif(self.numero_dimanche == 52):
-                values = (1,self.annee)
-                
             cur = con.cursor()
             cur.execute(query,values)
             row = cur.fetchone()

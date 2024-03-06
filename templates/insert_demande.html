@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert Demande</title>
+    <link rel="stylesheet" href="static/login.css">
 </head>
 <body>
     <div class="container">
@@ -13,21 +14,29 @@
             </div>
             <div class="form_container--content">
                 <form action="/insert_demande" method="POST">
-                    <label for="input_number">montant</label>
-                    <input id="input_number"type="number"min="0"value="0"name="montant"placeholder="Enter the montant">
-                    <label for="input_number">Numero dimanche</label>
-                    <select id="input_number"name="num_dim">
-                        {% for i in range(1,53): %}
+                    <div class="montant">
+                        <label for="input_number">montant</label>
+                        <input id="input_number"type="number"min="0"value="0"name="montant"placeholder="Enter the montant">
+                    </div>
+                    <div class="num_dim">    
+                        <label for="input_number">Numero dimanche</label>
+                        <select id="input_number"name="num_dim">
+                            {% for i in range(1,53): %}
                             <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
-                    <label for="input_eglise">Eglise</label>
-                    <select id="input_eglise"name="eglise">
-                        {% for eglise in list_eglise : %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="eglise">
+                        <label for="input_eglise">Eglise</label>
+                        <select id="input_eglise"name="eglise">
+                            {% for eglise in list_eglise : %}
                             <option value="{{eglise.id}}">{{eglise.name}}</option>
-                        {% endfor %}
-                    </select>
-                    <button type="submit">Insert</button>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="bt">
+                        <button type="submit">Insert</button>
+                    </div>
                 </form>
             </div>
         </div>

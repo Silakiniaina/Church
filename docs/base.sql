@@ -38,7 +38,7 @@ CREATE OR REPLACE VIEW v_info_eglise AS
    SELECT TOP 1 h.id_eglise, e.nom AS nom, solde AS solde, date_historique AS date_solde
    FROM historique_solde h
    JOIN eglise e ON h.id_eglise = e.id
-   ORDER BY h.id DESC;
+   ORDER BY h.id DESC ;
 ;
 
 CREATE TABLE Pret(
