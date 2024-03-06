@@ -12,4 +12,10 @@ class Pret:
             raise NumberException("Le montant ne peut pas etre negatif")
         else:
             self.montant = entered_montant 
+
+    def set_id(self,entered_id: int):
+        if(entered_id <= 0):
+            raise NumberException("The id can't be null or less than 0")
+        else: 
+            self.id = entered_id
     
