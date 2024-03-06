@@ -28,3 +28,15 @@ class DateManagement:
 
         return date_en_cours
     
+    @staticmethod 
+    def numero_dimanche(date_y, systeme=1):
+        if isinstance(date_y, str):
+            date_y = date.fromisoformat(date_y)
+        jour_semaine = date_y.weekday()
+        decalage = (jour_semaine - 6) % 7
+        date_dimanche = date_y + timedelta(days=1 - decalage)
+        if systeme == 2:
+            if date_dimanche.isocalendar().week != 1:
+                date_dimanche += timedelta(days=7)
+        return date_dimanche.isoformat()
+    

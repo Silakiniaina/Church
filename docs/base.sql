@@ -43,12 +43,15 @@ CREATE VIEW v_info_eglise AS
 
 CREATE TABLE Pret(
    id INT IDENTITY,
-   date_pret DATETIME NOT NULL,
+   numero_dimanche INT NOT NULL,
+   annee INT NOT NULL,
    montant DECIMAL(18,2)   NOT NULL,
    id_eglise INT,
    id_croyant INT,
+   date_pret DATETIME DEFAULT NOW(),
    PRIMARY KEY(id),
-   UNIQUE(date_heure_pret),
+   UNIQUE(date_pret),
+   CHECK(numero_dimanche <= 52 && numero_dimanche >= 1)
    FOREIGN KEY(id_eglise) REFERENCES Eglise(id),
    FOREIGN KEY(id_croyant) REFERENCES Croyant(id)
 );

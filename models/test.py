@@ -4,6 +4,5 @@ from eglise import Eglise
 from pret import Pret
 from datetime import datetime
 
-ls = Pret.get_all_pret_by_id_eglise(1)
-print(len(ls))
-
+p = Pret(2,5,2024,54000000,1,1)
+print(p.get_estimation())

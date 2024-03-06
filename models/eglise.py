@@ -5,9 +5,8 @@ from exception import *
 class Eglise: 
     id: int
     name: str
-    current_solde: float 
-    current_date_solde: date
-    pret: dict
+    initial_solde: float
+    date_last_fetch: date  
     
     def set_id(self,entered_id: int):
         if(entered_id <= 0):
@@ -21,11 +20,11 @@ class Eglise:
         else:
             self.name = n    
             
-    def __init__(self,id: int,name: str,cur_solde: float,cur_date: date):
+    def __init__(self,id: int,name: str,cur_solde: float,dt: date):
         self.set_id(id)
         self.set_name(name) 
-        self.current_solde = cur_solde
-        self.current_date_solde = cur_date 
+        self.initial_solde = cur_solde
+        self.date_last_fetch = dt
         
     @staticmethod
     def get_all_eglise():

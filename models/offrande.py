@@ -1,6 +1,8 @@
+import decimal
 from exception import *
 from eglise import Eglise
 from data import Database
+from utils import DateManagement
 
 class Offrande: 
     id: int
@@ -54,11 +56,14 @@ class Offrande:
     def get_eglise(self):
         return Eglise.get_eglise_by_id(self.id_eglise)
             
-    def __init__(self,id,montant,nb_dim,annee,egl,n):
+    def __init__(self,id,montant,nb_dim,annee,n,egl):
         self.set_id(id)
         self.set_montant(montant)
         self.set_annee(annee)
-        self.eglise = Eglise.get_eglise_by_id(egl)
+        if(str(egl).isdigit()):
+            self.eglise = Eglise.get_eglise_by_id(egl)
+        else:
+            self.eglise = egl
         self.set_nombre(n)
         self.set_numero_dimanche(nb_dim)
         
@@ -69,8 +74,13 @@ class Offrande:
             con = Database.get_connection()
             query = f"INSERT INTO offrande(montant,numero_dimanche,annee,id_eglise,nombre) VALUES (?,?,?,?,?)"
             cur = con.cursor()
-            values = (self.montant,self.numero_dimanche,self.annee,self.eglise.id,self.nombre)
-            cur.execute(query,values)
+            values1 = (self.montant,self.numero_dimanche,self.annee,self.eglise.id,self.nombre)
+            cur.execute(query,values1)
+            # query = f"INSERT INTO historique_solde(solde,date_historique,id_eglise) VALUES (?,?,?)"
+            # solde = self.eglise.initial_solde + self.montant
+            # date = DateManagement.date_dimanche_numero(self.numero_dimanche,self.annee)
+            # values = (solde,date, self.eglise.id)
+            # cur.execute(query,values)
             con.commit()
             print("Insertion fait")
         except Exception as e:
@@ -81,6 +91,17 @@ class Offrande:
             if(con != None): con.close()
         return
     
+    @staticmethod 
+    def get_last_offrande(num: int , annee: int):
+        res = Offrande.get_offrande_by_numero_dimanche(num,annee)
+        while(res == None):
+            num -= 1
+            if(num != 0): 
+                res = Offrande.get_offrande_by_numero_dimanche(num,annee)
+            else: 
+                raise Exception("There was no offrade this year")
+        return res 
+   
     @staticmethod
     def get_all_offrande():
         result = []
@@ -117,7 +138,7 @@ class Offrande:
             cur.execute(query,values)
             row = cur.fetchone()
             if(row != None):
-                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),row.__getitem__(5));
+                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),Eglise.get_eglise_by_id(row.__getitem__(5)));
         except Exception as e:
             raise e
         finally:
@@ -139,7 +160,7 @@ class Offrande:
             cur.execute(query,values)
             row = cur.fetchone()
             if(row != None):
-                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),row.__getitem__(5));
+                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),Eglise.get_eglise_by_id(row.__getitem__(5)));
         except Exception as e:
             raise e
         finally:
@@ -167,12 +188,70 @@ class Offrande:
             if(con != None): con.close()
         return result
     
+    @staticmethod 
+    def get_last_offrande_by_num_dim(n: int,year: int):
+        result = None
+        con = None
+        cur = None  
+        row = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM offrande WHERE numero_dimanche= ? AND annee <= ? ORDER BY annee DESC"
+            if(n == 52):
+                n = 1
+                year = year + 1
+            values = (n,year - 1)
+            cur = con.cursor()
+            cur.execute(query,values)
+            row = cur.fetchone()
+            if(row != None):
+                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),Eglise.get_eglise_by_id(row.__getitem__(5)));
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+    
+    def get_offrande_anterieur(self):
+        # print("Get offrande anterieur de  : ",self.numero_dimanche," year : ",self.annee)
+        result = None
+        con = None
+        cur = None  
+        row = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM offrande WHERE numero_dimanche= ? AND annee= ?"
+            if(self.numero_dimanche < 52):
+                values = (self.numero_dimanche + 1,self.annee - 1)
+            elif(self.numero_dimanche == 52):
+                values = (1,self.annee)
+                
+            cur = con.cursor()
+            cur.execute(query,values)
+            row = cur.fetchone()
+            if(row != None):
+                result = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),Eglise.get_eglise_by_id(row.__getitem__(5)));
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+    
     def predict(self,portion):
         result = None
-        offrande_antetieur = Offrande.get_offrande_by_numero_dimanche(self.numero_dimanche + 1,self.annee - 1)
+        offrande_antetieur = Offrande.get_last_offrande_by_num_dim(self.numero_dimanche,self.annee)
         surplus = float(offrande_antetieur.montant) * portion
         next_valeur_offrande = float(offrande_antetieur.montant) + surplus
-        result = Offrande(2,next_valeur_offrande,self.numero_dimanche +1,self.annee,self.eglise.id,self.nombre)
+        self.eglise.initial_solde += decimal.Decimal(next_valeur_offrande)
+        num_dim = 1 
+        annee = self.annee
+        if(self.numero_dimanche < 52): num_dim = self.numero_dimanche + 1
+        elif(self.numero_dimanche == 52):
+            num_dim = 1
+            annee += 1
+        result = Offrande(2,next_valeur_offrande,num_dim,annee,self.nombre,self.eglise)
         return result;
 
         
