@@ -104,3 +104,7 @@ INSERT INTO offrande(montant,numero_dimanche,annee,nombre,id_eglise) VALUES
     (384337,51,2023,342,1),
     (369011,52,2023,407,1)
 ;
+
+INSERT INTO historique_solde(solde,date_historique) VALUES 
+    ()
+;

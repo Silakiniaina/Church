@@ -18,8 +18,6 @@ class Formater:
 class DateManagement:
     @staticmethod
     def date_dimanche_numero(n, annee):
-        if n < 1 or n > 52:
-            raise ValueError("Le chiffre n doit être compris entre 1 et 52 inclus.")
         date_en_cours = datetime(annee, 1, 1)
         dimanches_trouves = 0
         while dimanches_trouves != n:

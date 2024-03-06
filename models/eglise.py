@@ -1,9 +1,13 @@
 from data import Database
 from utils import Formater
+from datetime import date
 from exception import *
 class Eglise: 
     id: int
     name: str
+    current_solde: float 
+    current_date_solde: date
+    pret: dict
     
     def set_id(self,entered_id: int):
         if(entered_id <= 0):
@@ -17,9 +21,11 @@ class Eglise:
         else:
             self.name = n    
             
-    def __init__(self,id,name):
+    def __init__(self,id: int,name: str,cur_solde: float,cur_date: date):
         self.set_id(id)
-        self.set_name(name)  
+        self.set_name(name) 
+        self.current_solde = cur_solde
+        self.current_date_solde = cur_date 
         
     @staticmethod
     def get_all_eglise():
@@ -29,12 +35,12 @@ class Eglise:
         rows = None
         try:
             con = Database.get_connection()
-            query = "SELECT * FROM eglise"
+            query = "SELECT * FROM v_info_eglise"
             cur = con.cursor()
             cur.execute(query)
             rows = cur.fetchall()
             for row in rows:
-                temp = Eglise(row.__getitem__(0),row.__getitem__(1));
+                temp = Eglise(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3));
                 result.append(temp)
         except Exception as e:
             raise e
@@ -51,13 +57,13 @@ class Eglise:
         row = None
         try:
             con = Database.get_connection()
-            query = "SELECT * FROM eglise WHERE id= ?"
+            query = "SELECT * FROM v_info_eglise WHERE id_eglise= ?"
             values = (id)
             cur = con.cursor()
             cur.execute(query,values)
             row = cur.fetchone()
             if(row != None):
-                result = Eglise(row.__getitem__(0),row.__getitem__(1));
+                result = Eglise(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3));
         except Exception as e:
             raise e
         finally:
