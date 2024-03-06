@@ -55,3 +55,25 @@ class Croyant:
             if(cur != None): cur.close()
             if(con != None): con.close()
         return result
+    
+    @staticmethod
+    def get_croyant_by_id(id: int):
+        result = None
+        con = None
+        cur = None  
+        row = None
+        try:
+            con = Database.get_connection()
+            query = f"SELECT * FROM croyant WHERE id = ?"
+            print(query)
+            cur = con.cursor()
+            cur.execute(query, id)
+            row = cur.fetchone()
+            if(row != None):
+                result = Croyant(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4));
+        except Exception as e:
+            print("There was an error while connecting")
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
