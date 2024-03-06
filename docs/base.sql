@@ -41,6 +41,19 @@ CREATE VIEW v_info_eglise AS
 		GROUP BY h.id_eglise
 ;
 
+CREATE TABLE Pret(
+   id INT IDENTITY,
+   date_pret DATETIME NOT NULL,
+   montant DECIMAL(18,2)   NOT NULL,
+   id_eglise INT,
+   id_croyant INT,
+   PRIMARY KEY(id),
+   UNIQUE(date_heure_pret),
+   FOREIGN KEY(id_eglise) REFERENCES Eglise(id),
+   FOREIGN KEY(id_croyant) REFERENCES Croyant(id)
+);
+
+
 INSERT INTO Croyant(nom,prenom,date_naissance,email,mot_de_passe) VALUES 
     ('Ravelonarivo','Sanda','2005-07-12','sanda@gmail.com','admin')
 ;

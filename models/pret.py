@@ -1,11 +1,15 @@
 from datetime import datetime
 from exception import *
+from models.croyant import Croyant
+from models.data import Database
+from models.eglise import Eglise
 
 class Pret:
     id: int
     date_pret: datetime
     montant: float 
-    id_croyant: int
+    croyant: Croyant
+    eglise: Eglise
     
     def set_montant(self,entered_montant: float):
         if(entered_montant < 0):
@@ -19,9 +23,11 @@ class Pret:
         else: 
             self.id = entered_id
     
-    def __init__(self,id: int, dt: datetime, m: float, id_croyant: int):
+    def __init__(self,id: int, dt: datetime, m: float, id_croyant: int,id_eglise):
         self.set_id(id)
         self.date_pret = dt
         self.set_montant(m)
-        self.id_croyant = id_croyant
+        self.croyant = Croyant.get_croyant_by_id(id_croyant)
+        self.eglise = Eglise.get_eglise_by_id(id_eglise)
+        
     
