@@ -29,16 +29,16 @@ CREATE TABLE Historique_solde(
    solde DECIMAL(18,2)   NOT NULL,
    date_historique DATE NOT NULL,
    id_eglise INT,
+   type_solde INT DEFAULT 0,
    PRIMARY KEY(id),
    FOREIGN KEY(id_eglise) REFERENCES Eglise(id)
 );
 
-CREATE VIEW v_info_eglise AS 
-	SELECT h.id_eglise,MAX(e.nom) AS nom,MAX(solde) AS solde, MAX(date_historique) AS date_solde 
-		FROM historique_solde h 
-		JOIN eglise e 
-		ON h.id_eglise = e.id 
-		GROUP BY h.id_eglise
+CREATE OR REPLACE VIEW v_info_eglise AS 
+   SELECT TOP 1 h.id_eglise, e.nom AS nom, solde AS solde, date_historique AS date_solde
+   FROM historique_solde h
+   JOIN eglise e ON h.id_eglise = e.id
+   ORDER BY h.id DESC;
 ;
 
 CREATE TABLE Pret(
@@ -48,7 +48,7 @@ CREATE TABLE Pret(
    montant DECIMAL(18,2)   NOT NULL,
    id_eglise INT,
    id_croyant INT,
-   date_pret DATETIME DEFAULT NOW(),
+   date_pret DATETIME DEFAULT SYSDATETIME(),
    PRIMARY KEY(id),
    UNIQUE(date_pret),
    CHECK(numero_dimanche <= 52 && numero_dimanche >= 1)

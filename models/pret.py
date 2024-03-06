@@ -1,11 +1,11 @@
 from datetime import datetime
 import decimal
-from exception import *
-from croyant import Croyant
-from data import Database
-from eglise import Eglise
-from offrande import Offrande
-from utils import DateManagement
+from models.exception import *
+from models.croyant import Croyant
+from models.data import Database
+from models.eglise import Eglise
+from models.offrande import Offrande
+from models.utils import DateManagement
 
 class Pret:
     id: int
@@ -52,7 +52,7 @@ class Pret:
         cur = None 
         try:
             con = Database.get_connection()
-            query = f"INSERT INTO pret(montant,numero_dimanche,annee,id_croyant,id_eglise) VALUES (?,?,?,?,?,?)"
+            query = f"INSERT INTO demande(montant,numero_dimanche,annee,id_croyant,id_eglise) VALUES (?,?,?,?,?)"
             cur = con.cursor()
             values = (self.montant,self.numero_dimanche,self.annee,self.croyant.id,self.eglise.id)
             cur.execute(query,values)
@@ -74,7 +74,7 @@ class Pret:
         rows = None
         try:
             con = Database.get_connection()
-            query = "SELECT * FROM pret WHERE id_eglise= ?"
+            query = "SELECT * FROM demande WHERE id_eglise= ?"
             values = (id)
             cur = con.cursor()
             cur.execute(query,values)
@@ -92,18 +92,41 @@ class Pret:
     
     def get_estimation(self):
         eglise = Eglise.get_eglise_by_id(self.eglise.id)
-        print("Demande de : ",self.montant," avec Solde initiale : ",eglise.initial_solde,"difference : ",eglise.initial_solde - self.montant)
+        result = None
         last_offrande = Offrande.get_last_offrande(self.numero_dimanche,self.annee)
         portion = Offrande.get_portion(self.numero_dimanche,self.annee)
         if(eglise.initial_solde >= self.montant):
-            return DateManagement.date_dimanche_numero(self.numero_dimanche,self.annee)
+            result =  DateManagement.date_dimanche_numero(self.numero_dimanche,self.annee)
         else:
+            difference = 0.0
             while(eglise.initial_solde < self.montant):
                 next_offrande = last_offrande.predict(portion)
                 eglise.initial_solde += decimal.Decimal(next_offrande.montant)
-                print("Demande : ",self.montant, "Current solde : ",eglise.initial_solde," difference : ",eglise.initial_solde - self.montant) 
+                difference = eglise.initial_solde - decimal.Decimal(self.montant)
+                print("Demande : ",self.montant, "Current solde : ",eglise.initial_solde," difference : ",difference) 
                 last_offrande = next_offrande
-            return DateManagement.date_dimanche_numero(last_offrande.numero_dimanche,last_offrande.annee)
-        
+            result = DateManagement.date_dimanche_numero(last_offrande.numero_dimanche,last_offrande.annee)
+            self.update_historique_solde(result,difference)
+        return result
+    
+    def update_historique_solde(self,dt,val):
+        con = None
+        cur = None 
+        try:
+            con = Database.get_connection()
+            query = f"INSERT INTO historique_solde(solde,date_historique,id_eglise,type_solde) VALUES (?,?,?,?)"
+            print(query)
+            cur = con.cursor()
+            values = (val,dt,self.eglise.id,1)
+            cur.execute(query,values)
+            con.commit()
+            print("Insertion fait")
+        except Exception as e:
+            con.rollback()
+            raise e       
+        finally:
+            if(cur != None): cur.close() 
+            if(con != None): con.close()
+        return
         
     

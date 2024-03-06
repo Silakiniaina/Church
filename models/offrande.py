@@ -1,8 +1,8 @@
 import decimal
-from exception import *
-from eglise import Eglise
-from data import Database
-from utils import DateManagement
+from models.exception import *
+from models.eglise import Eglise
+from models.data import Database
+from models.utils import DateManagement
 
 class Offrande: 
     id: int

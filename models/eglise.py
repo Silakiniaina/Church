@@ -1,7 +1,7 @@
-from data import Database
-from utils import Formater
+from models.data import Database
+from models.utils import Formater
 from datetime import date
-from exception import *
+from models.exception import *
 class Eglise: 
     id: int
     name: str
