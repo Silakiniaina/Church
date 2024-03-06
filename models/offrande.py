@@ -8,7 +8,7 @@ class Offrande:
     numero_dimanche: int 
     nombre: int
     annee: int 
-    id_eglise: int
+    eglise: Eglise
      
     def set_id(self,entered_id: int):
         if(entered_id <= 0):
@@ -58,7 +58,7 @@ class Offrande:
         self.set_id(id)
         self.set_montant(montant)
         self.set_annee(annee)
-        self.set_id_eglise(egl)
+        self.eglise = Eglise.get_eglise_by_id(egl)
         self.set_nombre(n)
         self.set_numero_dimanche(nb_dim)
         
@@ -69,7 +69,7 @@ class Offrande:
             con = Database.get_connection()
             query = f"INSERT INTO offrande(montant,numero_dimanche,annee,id_eglise,nombre) VALUES (?,?,?,?,?)"
             cur = con.cursor()
-            values = (self.montant,self.numero_dimanche,self.annee,self.id_eglise,self.nombre)
+            values = (self.montant,self.numero_dimanche,self.annee,self.eglise.id,self.nombre)
             cur.execute(query,values)
             con.commit()
             print("Insertion fait")
@@ -172,7 +172,7 @@ class Offrande:
         offrande_antetieur = Offrande.get_offrande_by_numero_dimanche(self.numero_dimanche + 1,self.annee - 1)
         surplus = float(offrande_antetieur.montant) * portion
         next_valeur_offrande = float(offrande_antetieur.montant) + surplus
-        result = Offrande(2,next_valeur_offrande,self.numero_dimanche +1,self.annee,self.id_eglise,self.nombre)
+        result = Offrande(2,next_valeur_offrande,self.numero_dimanche +1,self.annee,self.eglise.id,self.nombre)
         return result;
 
         

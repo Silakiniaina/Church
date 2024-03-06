@@ -1,8 +1,8 @@
 from datetime import datetime
 from exception import *
-from models.croyant import Croyant
-from models.data import Database
-from models.eglise import Eglise
+from croyant import Croyant
+from data import Database
+from eglise import Eglise
 
 class Pret:
     id: int
@@ -23,7 +23,7 @@ class Pret:
         else: 
             self.id = entered_id
     
-    def __init__(self,id: int, dt: datetime, m: float, id_croyant: int,id_eglise):
+    def __init__(self,id: int, dt: datetime, m: float, id_eglise: int,id_croyant: int):
         self.set_id(id)
         self.date_pret = dt
         self.set_montant(m)
@@ -35,7 +35,7 @@ class Pret:
         cur = None 
         try:
             con = Database.get_connection()
-            query = f"INSERT INTO pret(montant,date_pret,id_croyant,id_eglise) VALUES (?,?,?)"
+            query = f"INSERT INTO pret(montant,date_pret,id_croyant,id_eglise) VALUES (?,?,?,?)"
             cur = con.cursor()
             values = (self.montant,self.date_pret,self.croyant.id,self.eglise.id)
             cur.execute(query,values)
@@ -48,4 +48,29 @@ class Pret:
             if(cur != None): cur.close() 
             if(con != None): con.close()
         return
+    
+    @staticmethod
+    def get_all_pret_by_id_eglise(id: int):
+        result = []
+        con = None
+        cur = None  
+        rows = None
+        try:
+            con = Database.get_connection()
+            query = "SELECT * FROM pret WHERE id_eglise= ?"
+            values = (id)
+            cur = con.cursor()
+            cur.execute(query,values)
+            rows = cur.fetchall()
+            temp = None
+            for row in rows:
+                temp = Pret(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4))
+                result.append(temp)
+        except Exception as e:
+            raise e
+        finally:
+            if(cur != None): cur.close()
+            if(con != None): con.close()
+        return result
+        
     
