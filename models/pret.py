@@ -29,5 +29,23 @@ class Pret:
         self.set_montant(m)
         self.croyant = Croyant.get_croyant_by_id(id_croyant)
         self.eglise = Eglise.get_eglise_by_id(id_eglise)
-        
+    
+    def insert(self):
+        con = None
+        cur = None 
+        try:
+            con = Database.get_connection()
+            query = f"INSERT INTO pret(montant,date_pret,id_croyant,id_eglise) VALUES (?,?,?)"
+            cur = con.cursor()
+            values = (self.montant,self.date_pret,self.croyant.id,self.eglise.id)
+            cur.execute(query,values)
+            con.commit()
+            print("Insertion fait")
+        except Exception as e:
+            con.rollback()
+            raise e       
+        finally:
+            if(cur != None): cur.close() 
+            if(con != None): con.close()
+        return
     
