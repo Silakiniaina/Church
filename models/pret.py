@@ -19,7 +19,7 @@ class Pret:
         else: 
             self.id = entered_id
     
-    def __init(self,id: int, dt: datetime, m: float, id_croyant: int):
+    def __init__(self,id: int, dt: datetime, m: float, id_croyant: int):
         self.set_id(id)
         self.date_pret = dt
         self.set_montant(m)
