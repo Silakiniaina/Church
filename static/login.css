@@ -50,8 +50,10 @@ body{
     text-align: left;
 }
 
-#links{
-    border: 1px solid black;
+.link{
+    font-family: sans-serif;
+    padding: 5px;
+    text-align: center;
 }
 
 a{
@@ -68,7 +70,7 @@ a::after{
     left: 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(45deg,red,blue,green);
+    background: linear-gradient(45deg,yellow,orange,red);
     scale : 0;
     transition: scale .3s;
 }

@@ -67,14 +67,14 @@ class Offrande:
         self.set_nombre(n)
         self.set_numero_dimanche(nb_dim)
         
-    def insert(self):
+    def insert(self,type=0):
         con = None
         cur = None 
         try:
             con = Database.get_connection()
-            query = f"INSERT INTO offrande(montant,numero_dimanche,annee,id_eglise,nombre) VALUES (?,?,?,?,?)"
+            query = f"INSERT INTO offrande(montant,numero_dimanche,annee,id_eglise,nombre,type_offrande) VALUES (?,?,?,?,?,?)"
             cur = con.cursor()
-            values1 = (self.montant,self.numero_dimanche,self.annee,self.eglise.id,self.nombre)
+            values1 = (self.montant,self.numero_dimanche,self.annee,self.eglise.id,self.nombre,type)
             cur.execute(query,values1)
             con.commit()
             print("Insertion fait")
@@ -105,9 +105,9 @@ class Offrande:
         rows = None
         try:
             con = Database.get_connection()
-            query = "SELECT * FROM offrande ORDER BY numero_dimanche ASC"
+            query = "SELECT * FROM offrande WHERE type_offrande = ? ORDER BY numero_dimanche ASC"
             cur = con.cursor()
-            cur.execute(query)
+            cur.execute(query,0)
             rows = cur.fetchall()
             for row in rows:
                 temp = Offrande(row.__getitem__(0),row.__getitem__(1),row.__getitem__(2),row.__getitem__(3),row.__getitem__(4),row.__getitem__(5));
@@ -173,7 +173,7 @@ class Offrande:
             if(n == 52):
                 n = 1
                 year = year + 1
-            values = (n,year - 1)
+            values = (n,year - 1,)
             cur = con.cursor()
             cur.execute(query,values)
             row = cur.fetchone()
@@ -199,10 +199,4 @@ class Offrande:
             num_dim = 1
             annee += 1
         result = Offrande(2,next_valeur_offrande,num_dim,annee,self.nombre,self.eglise)
-        return result;
-
-        
-        
-    
-    
-            
+        return result;           
